@@ -20,7 +20,6 @@ public class UserInfo {
     @NotBlank(message = "El nombre no puede estar vacío")
     private String username;
     private String email;
-
     @NotBlank(message = "Debes introducir una contraseña")
     private String password;
     private String roles;
