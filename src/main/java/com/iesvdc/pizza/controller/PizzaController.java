@@ -3,6 +3,7 @@ package com.iesvdc.pizza.controller;
 import com.iesvdc.pizza.entity.Pizza;
 import com.iesvdc.pizza.service.PizzaService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,6 +60,7 @@ public class PizzaController {
      * @return la pizza creada y el código 201 created
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Pizza> agregarPizza(@RequestBody Pizza pizza) {
         return ResponseEntity.ok(pizzaService.agregarPizza(pizza));
     }
@@ -70,6 +72,7 @@ public class PizzaController {
      * @return la pizza actualizada y código 200 OK, o 404 Not Found si la pizza no existe.
      */
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Pizza> actualizarPizza(@PathVariable String id, @RequestBody Pizza pizza) {
         return ResponseEntity.ok(pizzaService.actualizarPizza(id, pizza));
     }
@@ -80,6 +83,7 @@ public class PizzaController {
      * @return código 204 si se ha eliminado correctamente, o 404 si no se ha encontrado la pizza.
      */
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> eliminarPizza(@PathVariable String id) {
         pizzaService.eliminarPizza(id);
         return ResponseEntity.noContent().build();

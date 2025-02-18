@@ -7,12 +7,16 @@ import com.iesvdc.pizza.service.JwtService;
 import com.iesvdc.pizza.service.UserInfoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -38,9 +42,9 @@ public class UserController {
     }
 
     @GetMapping("/user/userProfile")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public String userProfile() {
-        return "Welcome to User Profile";
+        return "Welcome to Cliente Profile";
     }
 
     @GetMapping("/admin/adminProfile")
@@ -49,33 +53,19 @@ public class UserController {
         return "Welcome to Admin Profile";
     }
 
+
+     //Version alternativa del generateToken:
     @PostMapping("/generateToken")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
         );
+
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getUsername());
+            String token = jwtService.generateToken(authRequest.getUsername());
+            return ResponseEntity.ok(Map.of("token", token, "message", "Authentication successful"));
         } else {
-            throw new UsernameNotFoundException("Invalid user request!");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
-
-    /**
-     * Version alternativa del generateToken:
-     *
-     * @PostMapping("/generateToken")
-     * public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-     *     Authentication authentication = authenticationManager.authenticate(
-     *         new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
-     *     );
-     *
-     *     if (authentication.isAuthenticated()) {
-     *         String token = jwtService.generateToken(authRequest.getUsername());
-     *         return ResponseEntity.ok(Map.of("token", token, "message", "Authentication successful"));
-     *     } else {
-     *         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-     *     }
-     * }
-     */
 }

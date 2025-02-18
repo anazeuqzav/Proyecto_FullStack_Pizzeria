@@ -4,6 +4,7 @@ import com.iesvdc.pizza.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,6 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
+    @Lazy
     private JwtAuthFilter authFilter;
 
     @Bean
@@ -39,6 +41,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
                         .requestMatchers("/auth/user/**").hasAuthority("ROLE_USER")
                         .requestMatchers("/auth/admin/**").hasAuthority("ROLE_ADMIN")
+                        // Reglas de seguridad para pizzas
+                        .requestMatchers("/api/pizzas").permitAll() // Ver todas las pizzas (público)
+                        .requestMatchers("/api/pizzas/**").hasAuthority("ROLE_ADMIN")
+
                         .anyRequest().authenticated() // Protect all other endpoints
                 )
                 .sessionManagement(sess -> sess

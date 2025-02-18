@@ -22,7 +22,7 @@ public class UserInfo {
     private String email;
     @NotBlank(message = "Debes introducir una contraseña")
     private String password;
-    private String roles;
+    private String roles; // CLIENTE Y ADMIN
 
 
     public String getId() {

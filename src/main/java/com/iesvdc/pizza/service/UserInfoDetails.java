@@ -20,8 +20,10 @@ public class UserInfoDetails implements UserDetails {
         this.password = userInfo.getPassword();
         this.authorities = List.of(userInfo.getRoles().split(","))
                 .stream()
-                .map(SimpleGrantedAuthority::new)
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
                 .collect(Collectors.toList());
+        System.out.println("Cargando usuario: " + username + " con roles: " + this.authorities);
+
     }
 
     @Override
