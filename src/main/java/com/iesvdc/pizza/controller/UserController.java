@@ -53,7 +53,6 @@ public class UserController {
         return "Welcome to Admin Profile";
     }
 
-
      //Version alternativa del generateToken:
     @PostMapping("/generateToken")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {

@@ -1,8 +1,11 @@
 package com.iesvdc.pizza.controller;
 
 import com.iesvdc.pizza.entity.Pedido;
+import com.iesvdc.pizza.entity.UserInfo;
+import com.iesvdc.pizza.repository.UserInfoRepository;
 import com.iesvdc.pizza.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,11 +16,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/pedidos")
+@RequestMapping("/api/pedidos")
 public class PedidoController {
 
     @Autowired
     private PedidoService pedidoService;
+
+    @Autowired
+    private UserInfoRepository userRepository;
 
     @PostMapping
     @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
@@ -39,10 +45,19 @@ public class PedidoController {
      * @return una lista con los pedidos que ha realizado el cliente
      */
     @GetMapping("/misPedidos")
-    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public ResponseEntity<List<Pedido>> obtenerMisPedidos(@AuthenticationPrincipal UserDetails userDetails) {
-        String emailCliente = userDetails.getUsername();
-        List<Pedido> pedidos = pedidoService.obtenerPedidosPorCliente(emailCliente);
+        String username = userDetails.getUsername();
+
+        // Buscar el usuario en la base de datos para obtener su ID
+        Optional<UserInfo> userOpt = userRepository.findByUsername(username);
+
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Usuario no encontrado
+        }
+
+        String clienteId = userOpt.get().getId(); // Obtener el ID del cliente
+        List<Pedido> pedidos = pedidoService.obtenerPedidosPorCliente(clienteId); // Buscar pedidos por clienteId
+
         return ResponseEntity.ok(pedidos);
     }
 
