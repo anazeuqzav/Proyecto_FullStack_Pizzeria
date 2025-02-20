@@ -1,6 +1,8 @@
 package com.iesvdc.pizza.config;
 import com.iesvdc.pizza.filter.JwtAuthFilter;
 import com.iesvdc.pizza.service.UserInfoService;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +39,7 @@ public class SecurityConfig {
     @Lazy
     private JwtAuthFilter authFilter;
 
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserInfoService(); // Ensure UserInfoService implements UserDetailsService
@@ -43,15 +47,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())// 🔹 Desactivar CSRF (recomendado en APIs sin estado)
+                .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 🔹 Habilitar CORS si el frontend está separado
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas (sin autenticación)
-                        .requestMatchers("/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
-                        .requestMatchers("/css/**", "/js/**").permitAll() // Archivos estáticos
+                        .requestMatchers("/auth/register", "/auth/login", "/", "/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()  // Archivos estáticos
 
                         // Seguridad por roles
-                        .requestMatchers("/auth/user/**").hasRole("CLIENTE")
+                        .requestMatchers("/auth/user/**", "/auth/pizzas").hasRole("CLIENTE")
                         .requestMatchers("/auth/admin/**").hasRole("ADMIN")
 
                         // Seguridad en pizzas (ver todas permitido, modificar solo ADMIN)
@@ -61,16 +65,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/pizzas/**").hasRole("ADMIN")
 
                         // Seguridad en pedidos
-                        .requestMatchers(HttpMethod.POST, "/api/pedidos").hasRole("CLIENTE")
-                        .requestMatchers(HttpMethod.GET, "/api/pedidos/misPedidos").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.POST,  "/api/pedidos").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.GET,  "/auth/pizzas","/api/pedidos/misPedidos").hasRole("CLIENTE")
                         .requestMatchers(HttpMethod.GET, "/api/pedidos").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/pedidos/{id}").hasRole("ADMIN")
 
-                        .anyRequest().authenticated() // 🔹 Todas las demás rutas requieren autenticación
+                        .anyRequest().authenticated() // Todas las demás rutas requieren autenticación
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 🔹 API sin estado
-                .authenticationProvider(authenticationProvider()) // 🔹 Proveedor de autenticación JWT
-                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class); // 🔹 Filtro de autenticación JWT
+                .authenticationProvider(authenticationProvider()) // Proveedor de autenticación JWT
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

@@ -18,7 +18,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         if (response.ok) {
             localStorage.setItem("token", data.token);
             alert("Inicio de sesión exitoso");
-            window.location.href = "pizzas.html";  // Redirige a la página de pizzas
+            window.location.href = "pizzas.html";  // esto deberia ser una accion ? 
         } else {
             alert("Error en el login: " + data.message);
         }

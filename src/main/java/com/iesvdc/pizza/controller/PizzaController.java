@@ -38,6 +38,7 @@ public class PizzaController {
      * @return lista de pizzas y el código de estado 200 OK
      */
     @GetMapping("/disponibles")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public List<Pizza> obtenerPizzasDisponibles() {
         return pizzaService.obtenerPizzasDisponibles();
     }

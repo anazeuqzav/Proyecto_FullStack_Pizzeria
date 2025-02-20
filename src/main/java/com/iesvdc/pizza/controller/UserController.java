@@ -3,6 +3,7 @@ package com.iesvdc.pizza.controller;
 
 import com.iesvdc.pizza.entity.AuthRequest;
 import com.iesvdc.pizza.entity.UserInfo;
+import com.iesvdc.pizza.repository.UserInfoRepository;
 import com.iesvdc.pizza.service.JwtService;
 import com.iesvdc.pizza.service.UserInfoService;
 import jakarta.validation.Valid;
@@ -27,6 +28,10 @@ public class UserController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -54,17 +59,32 @@ public class UserController {
     }
 
      //Version alternativa del generateToken:
-    @PostMapping("/generateToken")
-    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
-        );
+     @PostMapping("/generateToken")
+     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+         Authentication authentication = authenticationManager.authenticate(
+                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+         );
 
-        if (authentication.isAuthenticated()) {
-            String token = jwtService.generateToken(authRequest.getUsername());
-            return ResponseEntity.ok(Map.of("token", token, "message", "Authentication successful"));
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-        }
-    }
+         if (authentication.isAuthenticated()) {
+             // Buscar usuario en MongoDB
+             UserInfo user = userInfoRepository.findByUsername(authRequest.getUsername())
+                     .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+
+             // Generar token con el ID del usuario
+             String token = jwtService.generateToken(user.getUsername(), user.getId(), user.getRoles());
+
+             // Obtener rol del usuario
+             String redirectUrl = "/login"; // Valor por defecto
+             if (user.getRoles().contains("CLIENTE")) {
+                 redirectUrl = "/auth/pizzas";
+             } else if (user.getRoles().contains("ADMIN")) {
+                 redirectUrl = "/auth/admin";
+             }
+
+             return ResponseEntity.ok(Map.of("token", token, "message", "Authentication successful", "redirectUrl", redirectUrl));
+         } else {
+             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+         }
+     }
+
 }
