@@ -31,17 +31,19 @@ public class LoginController {
     @GetMapping("/pizzas")
     @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public String catalogo(Model model, HttpServletRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.getAuthorities().stream()
-                .anyMatch(auth -> auth.getAuthority().equals("ROLE_CLIENTE"))) {
-            System.out.println("Usuario autenticado Controllador: " + authentication.getName());
-            System.out.println("Roles: " + authentication.getAuthorities());
-            String token = request.getHeader("Authorization");
-            model.addAttribute("token", token);
-            return "pizzas"; // Devuelve la vista de pizzas
-        } else {
-            System.out.println("Acceso denegado: Usuario no autenticado o sin rol CLIENTE");
-            throw new AccessDeniedException("Acceso denegado");
-        }
+        agregarTokenAlModelo(model, request);
+        return "pizzas";
+    }
+
+    @GetMapping("/hacerPedido")
+    @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
+    public String hacerPedido(Model model, HttpServletRequest request) {
+        agregarTokenAlModelo(model, request);
+        return "pedido";
+    }
+
+    private void agregarTokenAlModelo(Model model, HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        model.addAttribute("token", token);
     }
 }

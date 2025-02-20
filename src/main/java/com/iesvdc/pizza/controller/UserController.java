@@ -6,6 +6,8 @@ import com.iesvdc.pizza.entity.UserInfo;
 import com.iesvdc.pizza.repository.UserInfoRepository;
 import com.iesvdc.pizza.service.JwtService;
 import com.iesvdc.pizza.service.UserInfoService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,33 +60,32 @@ public class UserController {
         return "Welcome to Admin Profile";
     }
 
-     //Version alternativa del generateToken:
-     @PostMapping("/generateToken")
-     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-         Authentication authentication = authenticationManager.authenticate(
-                 new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
-         );
+    @PostMapping("/generateToken")
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest, HttpServletResponse response) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+        );
 
-         if (authentication.isAuthenticated()) {
-             // Buscar usuario en MongoDB
-             UserInfo user = userInfoRepository.findByUsername(authRequest.getUsername())
-                     .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        if (authentication.isAuthenticated()) {
+            UserInfo user = userInfoRepository.findByUsername(authRequest.getUsername())
+                    .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
 
-             // Generar token con el ID del usuario
-             String token = jwtService.generateToken(user.getUsername(), user.getId(), user.getRoles());
+            String token = jwtService.generateToken(user.getUsername(), user.getId(), user.getRoles());
 
-             // Obtener rol del usuario
-             String redirectUrl = "/login"; // Valor por defecto
-             if (user.getRoles().contains("CLIENTE")) {
-                 redirectUrl = "/auth/pizzas";
-             } else if (user.getRoles().contains("ADMIN")) {
-                 redirectUrl = "/auth/admin";
-             }
+            // Configurar cookie con el token
+            Cookie jwtCookie = new Cookie("JWT-TOKEN", token);
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setSecure(false); // Cambia a true si usas HTTPS
+            jwtCookie.setPath("/"); // Disponible para toda la app
+            jwtCookie.setMaxAge(24 * 60 * 60); // Expira en 1 día
+            response.addCookie(jwtCookie);
 
-             return ResponseEntity.ok(Map.of("token", token, "message", "Authentication successful", "redirectUrl", redirectUrl));
-         } else {
-             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-         }
-     }
+            String redirectUrl = user.getRoles().contains("CLIENTE") ? "/auth/pizzas" : "/auth/admin";
+
+            return ResponseEntity.ok(Map.of("message", "Autenticación exitosa", "redirectUrl", redirectUrl));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+        }
+    }
 
 }

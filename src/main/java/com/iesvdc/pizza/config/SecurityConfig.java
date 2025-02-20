@@ -55,7 +55,7 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()  // Archivos estáticos
 
                         // Seguridad por roles
-                        .requestMatchers("/auth/user/**", "/auth/pizzas").hasRole("CLIENTE")
+                        .requestMatchers("/auth/user/**", "/auth/pizzas", "/auth/hacerPedido").hasRole("CLIENTE")
                         .requestMatchers("/auth/admin/**").hasRole("ADMIN")
 
                         // Seguridad en pizzas (ver todas permitido, modificar solo ADMIN)
