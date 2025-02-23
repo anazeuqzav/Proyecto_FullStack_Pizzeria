@@ -2,6 +2,7 @@ package com.iesvdc.pizza.filter;
 
 import com.iesvdc.pizza.service.JwtService;
 import com.iesvdc.pizza.service.UserInfoService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
@@ -30,8 +31,88 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private UserInfoService userDetailsService;
 
     @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // Retrieve the Authorization header
+        String token = null;
+        String username = null;
+        String role = null;
+
+        // Intentar obtener el token desde la cabecera Authorization
+        String authHeader = request.getHeader("Authorization");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        }
+
+        // Si no hay token en la cabecera, buscar en las cookies
+        if (token == null) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("JWT-TOKEN".equals(cookie.getName())) {
+                        token = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (token != null) {
+            try {
+                username = jwtService.extractUsername(token);
+                role = jwtService.extractRole(token);
+                System.out.println("Token recibido: " + token);
+                System.out.println("Usuario: " + username);
+                System.out.println("Rol: " + role);
+            } catch (ExpiredJwtException e) {
+                // Si el token expiró y la ruta es pública (login, register), limpiar la cookie y dejar pasar
+                System.out.println("Token expirado!!!!!!!!!!!!");
+                Cookie jwtCookie = new Cookie("JWT-TOKEN", null);
+                jwtCookie.setHttpOnly(true);
+                jwtCookie.setSecure(false); // Cambia a true si usas HTTPS
+                jwtCookie.setPath("/"); // Disponible para toda la app
+                jwtCookie.setMaxAge(0); // Expira en 1 día
+                response.addCookie(jwtCookie);
+
+            }
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+            if (jwtService.validateToken(token, userDetails)) {
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+                System.out.println("Roles asignados: " + authorities);
+
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        authorities
+                );
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("Autenticación establecida en SecurityContextHolder: " + SecurityContextHolder.getContext().getAuthentication());
+            }
+        }
+
+        filterChain.doFilter(request, response);
+        }
+    }
+
+    /*
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+        // Obtener el contexto y la ruta sin el contexto
+        String contextPath = request.getContextPath(); // Puede ser "" o, por ejemplo, "/MiApp"
+        String requestURI = request.getRequestURI();    // Ejemplo: "/MiApp/auth/login"
+        String path = requestURI.substring(contextPath.length()); // Ejemplo: "/auth/login"
+
+        // Excluir rutas públicas: login, register y welcome
+        if (path.startsWith("/auth/login") || path.startsWith("/auth/register") || path.equals("/auth/welcome") || path.equals("/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         String token = null;
         String username = null;
@@ -57,11 +138,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         if (token != null) {
-            username = jwtService.extractUsername(token);
-            role = jwtService.extractRole(token);
-            System.out.println("Token recibido: " + token);
-            System.out.println("Usuario: " + username);
-            System.out.println("Rol: " + role);
+            try {
+                username = jwtService.extractUsername(token);
+                role = jwtService.extractRole(token);
+                System.out.println("Token recibido: " + token);
+                System.out.println("Usuario: " + username);
+                System.out.println("Rol: " + role);
+            } catch (ExpiredJwtException e) {
+                // Si el token expiró y la ruta es pública (login, register), limpiar la cookie y dejar pasar
+                if (path.startsWith("/auth/login") || path.startsWith("/auth/register")) {
+                    Cookie expiredCookie = new Cookie("JWT-TOKEN", null);
+                    expiredCookie.setHttpOnly(true);
+                    expiredCookie.setSecure(false);
+                    expiredCookie.setPath("/");
+                    expiredCookie.setMaxAge(0);
+                    response.addCookie(expiredCookie);
+                    filterChain.doFilter(request, response);
+                    return;
+                } else {
+                    throw e;
+                }
+            }
         }
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -83,5 +180,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
-    }
-}
+
+    }*/

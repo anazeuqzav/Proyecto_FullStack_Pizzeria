@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo de Pizzas</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap">
+    <link rel="stylesheet" href="/css/catalogo.css">
+</head>
+<body class="catalog-body">
+<header class="header">
+    <h1 class="title">Carta de Pizzas</h1>
+    <h1 class="title">Pizzería Pom</h1>
+</header>
+
+<main id="pizzaCatalog" class="catalog-container">
+    <!-- Aquí se cargan las pizzas dinámicamente -->
+</main>
+
+<div class="button-container">
+    <button class="btn primary" onclick="irAHacerPedido()">Hacer Pedido</button>
+    <button class="btn secondary" onclick="verMisPedidos()">Ver Mis Pedidos</button>
+    <button class="btn logout-btn" id="logoutButton" onclick="cerrarSesion()">Cerrar Sesión</button>
+</div>
+
+<script src="/js/pizzas.js"></script>
+</body>
+</html>

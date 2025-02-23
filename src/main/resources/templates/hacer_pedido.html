@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="/css/carrito.css">
+</head>
+<body class="cart-body">
+<header class="cart-header">
+    <h1 class="cart-title">Carrito de Compras</h1>
+    <a href="/auth/pizzas" class="btn secondary">Volver al catálogo</a>
+</header>
+<main class="cart-container">
+    <section class="cart-summary">
+        <h2>Resumen del Pedido</h2>
+        <div id="pedidoContainer" class="cart-items"></div>
+        <div class="cart-buttons">
+            <button onclick="enviarPedido()" class="btn">Realizar Pedido</button>
+            <button id="vaciar-carrito" class="btn secondary">Vaciar Carrito</button>
+        </div>
+    </section>
+</main>
+<script src="/js/pedido.js"></script>
+</body>
+</html>
+

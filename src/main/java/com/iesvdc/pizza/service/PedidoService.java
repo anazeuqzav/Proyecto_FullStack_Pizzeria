@@ -26,8 +26,8 @@ public class PedidoService {
         return pedidoRepository.findById(id);
     }
 
-    public List<Pedido> obtenerPedidosPorCliente(String clienteId) {
-        return pedidoRepository.findByClienteId(clienteId);
+    public List<Pedido> obtenerPedidosPorCliente(String clienteUsername) {
+        return pedidoRepository.findByClienteUsername(clienteUsername);
     }
 
     public Pedido actualizarPedido(String id, Pedido pedido) {

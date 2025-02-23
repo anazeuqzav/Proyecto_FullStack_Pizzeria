@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +14,7 @@ public class Pedido {
     // Atributos
     @Id
     private String id;
-    private String clienteId;
+    private String clienteUsername;
     private List<PizzaPedido> pizzas;
     private double total;
 
@@ -27,7 +26,7 @@ public class Pedido {
 
     // Constructor con parámetros
     public Pedido(String clienteId, List<PizzaPedido> pizzas, String estado) {
-        this.clienteId = clienteId;
+        this.clienteUsername = clienteId;
         this.pizzas = pizzas;
         this.total = pizzas.stream().mapToDouble(PizzaPedido::getPrecio).sum(); // cálculo automático del total
         this.fecha = new Date();
@@ -39,9 +38,9 @@ public class Pedido {
 
     public void setId(String id) { this.id = id; }
 
-    public String getClienteId() { return clienteId; }
+    public String getClienteUsername() { return clienteUsername; }
 
-    public void setClienteId(String clienteId) { this.clienteId = clienteId; }
+    public void setClienteUsername(String clienteUsername) { this.clienteUsername = clienteUsername; }
 
     public List<PizzaPedido> getPizzas() { return pizzas; }
 

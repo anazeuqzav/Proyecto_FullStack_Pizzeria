@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Pizza</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Editar Pizza</h1>
+<form id="formEditarPizza">
+    <input type="hidden" id="pizzaId" value="${pizzaId}">
+    <input type="text" id="nombre" placeholder="Nombre" required><br>
+    <input type="text" id="descripcion" placeholder="Descripción" required><br>
+    <input type="text" id="ingredientes" placeholder="Ingredientes (separados por coma)" required><br>
+    <input type="number" id="precio" placeholder="Precio" required><br>
+    <input type="text" id="imagenUrl" placeholder="URL de la imagen" required><br>
+    <label><input type="checkbox" id="disponible"> Disponible</label><br>
+    <button type="submit">Guardar Cambios</button>
+    <button type="button" onclick="window.location.href='admin.html'">Cancelar</button>
+</form>
+
+<script src="/js/editar_pizza.js"></script>
+</body>
+</html>

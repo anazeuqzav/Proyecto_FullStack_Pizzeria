@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -47,16 +48,7 @@ public class PedidoController {
     @GetMapping("/misPedidos")
     public ResponseEntity<List<Pedido>> obtenerMisPedidos(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
-
-        // Buscar el usuario en la base de datos para obtener su ID
-        Optional<UserInfo> userOpt = userRepository.findByUsername(username);
-
-        if (userOpt.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // Usuario no encontrado
-        }
-
-        String clienteId = userOpt.get().getId(); // Obtener el ID del cliente
-        List<Pedido> pedidos = pedidoService.obtenerPedidosPorCliente(clienteId); // Buscar pedidos por clienteId
+        List<Pedido> pedidos = pedidoService.obtenerPedidosPorCliente(username); // Buscar por username directamente
 
         return ResponseEntity.ok(pedidos);
     }
@@ -72,8 +64,19 @@ public class PedidoController {
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Pedido> actualizarEstadoPedido(@PathVariable String id, @RequestBody Pedido pedido) {
-        Pedido pedidoActualizado = pedidoService.actualizarPedido(id, pedido);
-        return ResponseEntity.ok(pedidoActualizado);
+        Optional<Pedido> pedidoExistente = pedidoService.obtenerPedidoPorId(id);
+
+        if (pedidoExistente.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Pedido pedidoActualizado = pedidoExistente.get();
+        pedidoActualizado.setEstado(pedido.getEstado()); // Solo actualiza el estado
+
+        // Guarda el pedido con los demás datos intactos
+        Pedido pedidoGuardado = pedidoService.guardarPedido(pedidoActualizado);
+
+        return ResponseEntity.ok(pedidoGuardado);
     }
 
     @DeleteMapping("/{id}")

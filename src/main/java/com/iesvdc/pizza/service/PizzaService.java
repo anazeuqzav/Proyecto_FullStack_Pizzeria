@@ -69,6 +69,7 @@ public class PizzaService {
             pizza.setPrecio(pizzaActualizada.getPrecio());
             pizza.setIngredientes(pizzaActualizada.getIngredientes());
             pizza.setDisponible(pizzaActualizada.isDisponible());
+            pizza.setImagenUrl(pizzaActualizada.getImagenUrl());
 
             return pizzaRepository.save(pizza);
 

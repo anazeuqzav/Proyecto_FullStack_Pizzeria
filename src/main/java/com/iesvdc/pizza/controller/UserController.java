@@ -80,10 +80,13 @@ public class UserController {
             jwtCookie.setMaxAge(24 * 60 * 60); // Expira en 1 día
             response.addCookie(jwtCookie);
 
-            String redirectUrl = user.getRoles().contains("CLIENTE") ? "/auth/pizzas" : "/auth/admin";
+            String redirectUrl = user.getRoles().contains("CLIENTE") ? "/auth/pizzas" : "/auth/panel_admin";
 
-            return ResponseEntity.ok(Map.of("message", "Autenticación exitosa", "redirectUrl", redirectUrl));
-        } else {
+            return ResponseEntity.ok(Map.of(
+                    "message", "Autenticación exitosa",
+                    "token", token,  // 🔹 Añadir el token en la respuesta
+                    "redirectUrl", redirectUrl
+            ));        } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
