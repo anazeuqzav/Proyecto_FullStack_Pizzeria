@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
@@ -43,9 +44,23 @@ public class UserController {
         return "Welcome this endpoint is not secure";
     }
 
+    @GetMapping("/checkUsername")
+    public ResponseEntity<?> checkUsername(@RequestParam String username) {
+        boolean exists = userInfoRepository.findByUsername(username).isPresent();
+        if (exists) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("El nombre de usuario ya está en uso.");
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/addNewUser")
-    public String addNewUser( @Valid @RequestBody UserInfo userInfo) {
-        return service.addUser(userInfo);
+    public ResponseEntity<?> addNewUser(@Valid @RequestBody UserInfo userInfo) {
+        try {
+            String message = service.addUser(userInfo);
+            return ResponseEntity.ok(message);
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        }
     }
 
     @GetMapping("/user/userProfile")

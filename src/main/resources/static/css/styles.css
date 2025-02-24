@@ -85,8 +85,6 @@ h2 {
     background-color: #e67e22;
 }
 
-
-
 .register-link {
     margin-top: 15px;
     font-size: 14px;
@@ -97,11 +95,6 @@ h2 {
     text-decoration: none;
 }
 
-.error-message {
-    color: red;
-    margin-top: 10px;
-    display: none;
-}
 
 .register-body {
     display: flex;
@@ -163,10 +156,6 @@ h2 {
     animation: spin 1s linear infinite;
 }
 
-.hidden {
-    display: none;
-}
-
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -200,5 +189,12 @@ h2 {
 .error-message {
     color: red;
     margin-top: 10px;
+    padding: 10px;
+    background-color: #ffe6e6;
+    border: 1px solid #ff9999;
+    border-radius: 5px;
+}
+
+.hidden {
     display: none;
 }

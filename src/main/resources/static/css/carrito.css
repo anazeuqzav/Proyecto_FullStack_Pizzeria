@@ -13,10 +13,9 @@ body.cart-body {
 .cart-header {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     background-color: #ff6326;
-    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -25,7 +24,6 @@ body.cart-body {
     font-size: 50px;
     color: white;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-    margin: 0 auto;
 }
 
 .cart-container {
@@ -127,7 +125,6 @@ body.cart-body {
 
 .btn.secondary {
     background-color: white;
-    margin-right: 20px;
     color: #ff7b00;
     border: 2px solid #ff7b00;
 }

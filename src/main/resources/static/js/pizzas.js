@@ -85,8 +85,7 @@ function mostrarPizzas(pizzas) {
             }
             
             const precio = foundPizza.precio;
-        
-        
+
             agregarAlPedido(pizzaId, pizzaNombre, cantidad, precio);
         });
     });

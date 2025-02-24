@@ -2,7 +2,7 @@
              const token = localStorage.getItem("token");
              if (!token) {
                  alert("Acceso denegado. Inicia sesión.");
-                 window.location.href = "login.html";
+                 window.location.href = "/auth/login";
                  return;
              }
          });

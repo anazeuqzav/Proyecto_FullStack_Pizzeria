@@ -151,6 +151,18 @@ async function enviarPedido() {
     }
 }
 
+
+/**
+ * Vacía el carrito eliminando todos los elementos del localStorage y recargando la vista.
+ */
+function vaciarCarrito() {
+    // Elimina el pedido del localStorage
+    localStorage.removeItem("pedido");
+
+    // Recarga la vista del carrito
+    cargarPedido();
+}
+
 /**
  * Decodifica el token JWT almacenado para obtener la información del usuario.
  * @returns {Object} Datos decodificados del token.

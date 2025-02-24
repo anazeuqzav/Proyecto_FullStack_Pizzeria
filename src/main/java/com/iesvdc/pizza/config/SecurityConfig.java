@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 🔹 Habilitar CORS si el frontend está separado
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas (sin autenticación)
-                        .requestMatchers("/auth/register", "/auth/login", "/", "/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
+                        .requestMatchers("/auth/checkUsername/**", "/auth/register", "/auth/login", "/", "/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()  // Archivos estáticos
 
                         // Seguridad por roles

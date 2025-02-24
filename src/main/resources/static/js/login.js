@@ -11,7 +11,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     // Validación simple: verifica que ambos campos estén llenos
     if (!username || !password) {
         errorMsg.textContent = "Por favor, completa todos los campos.";
-        errorMsg.classList.remove("d-none");
+        errorMsg.classList.remove("hidden");
         return;
     }
 
@@ -37,16 +37,16 @@ document.getElementById("loginForm").addEventListener("submit", async function (
                 window.location.href = data.redirectUrl || "/"; // Redirige al usuario a la página correspondiente
             } else {
                 errorMsg.textContent = "Usuario o contraseña incorrectos.";
-                errorMsg.classList.remove("d-none");
+                errorMsg.classList.remove("hidden");
             }
         } catch (err) {
             console.error("Error parsing JSON:", err);
             errorMsg.textContent = "Usuario o contraseña incorrectos.";
-            errorMsg.classList.remove("d-none");
+            errorMsg.classList.remove("hidden");
         }
     } catch (error) {
         console.error("Error en el login:", error);
         errorMsg.textContent = "Error de conexión. Verifica tu red.";
-        errorMsg.classList.remove("d-none");
+        errorMsg.classList.remove("hidden");
     }
 });

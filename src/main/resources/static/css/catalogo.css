@@ -13,19 +13,17 @@ body.catalog-body {
 .header {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     background-color: #ff6326;;
-    padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .title {
     font-family: 'Luckiest Guy', cursive;
-    font-size: 60px;
+    font-size: 50px;
     color: white;
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
-    margin: 0 auto;
 }
 
 
@@ -49,11 +47,11 @@ body.catalog-body {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: #ff4d4d;
-    color: white;
-    padding: 10px 15px;
-    border: none;
+    background-color: white;
+    color: #ff7b00;
+    border: 2px solid #ff7b00;
     border-radius: 8px;
+    padding: 10px 20px;
     cursor: pointer;
     font-size: 14px;
     transition: background 0.3s, transform 0.2s;
