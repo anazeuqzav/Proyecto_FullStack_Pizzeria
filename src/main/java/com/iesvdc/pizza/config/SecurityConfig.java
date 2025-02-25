@@ -72,6 +72,9 @@ public class SecurityConfig {
 
                         .anyRequest().authenticated() // Todas las demás rutas requieren autenticación
                 )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/error/acceso-denegado") // Redirige a la URL del controlador
+                )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 🔹 API sin estado
                 .authenticationProvider(authenticationProvider()) // Proveedor de autenticación JWT
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);

@@ -2,13 +2,7 @@ package com.iesvdc.pizza.controller;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.boot.web.server.Cookie;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/auth")
-public class LoginController {
+public class WebController {
 
     @GetMapping("/login")
     public String login() {
@@ -71,9 +65,6 @@ public class LoginController {
         model.addAttribute("pizzaId", id);
         return "editar_pizza";
     }
-
-
-
 
     private void agregarTokenAlModelo(Model model, HttpServletRequest request) {
         String token = request.getHeader("Authorization");

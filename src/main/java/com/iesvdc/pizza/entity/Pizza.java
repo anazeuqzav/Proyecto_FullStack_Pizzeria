@@ -6,6 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 
+/**
+ * Representa una pizza en la base de datos MongoDb.
+ */
 @Data
 @Document(collection = "pizzas")
 public class Pizza {

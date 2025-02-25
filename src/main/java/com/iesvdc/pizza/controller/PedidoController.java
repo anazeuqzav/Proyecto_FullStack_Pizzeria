@@ -49,7 +49,6 @@ public class PedidoController {
     public ResponseEntity<List<Pedido>> obtenerMisPedidos(@AuthenticationPrincipal UserDetails userDetails) {
         String username = userDetails.getUsername();
         List<Pedido> pedidos = pedidoService.obtenerPedidosPorCliente(username); // Buscar por username directamente
-
         return ResponseEntity.ok(pedidos);
     }
 

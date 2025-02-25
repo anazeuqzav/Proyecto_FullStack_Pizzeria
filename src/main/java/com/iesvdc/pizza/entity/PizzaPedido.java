@@ -1,5 +1,9 @@
 package com.iesvdc.pizza.entity;
 
+/**
+ * Clase intermedia que almacena el nombre de una pizza y su precio para guardarla en
+ * la base de datos MongoDB
+ */
 public class PizzaPedido {
     private String nombre;
     private double precio;

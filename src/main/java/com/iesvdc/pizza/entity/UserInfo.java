@@ -7,13 +7,16 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
+/**
+ * Clase que representa la información de un usuario en la base de datos.
+ */
 @Data
-@AllArgsConstructor // no se si es necesario
-@NoArgsConstructor // no se si es necesario
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "usuarios")
 public class UserInfo {
 
+    // Atributos
     @Id
     private String id;
 
@@ -24,7 +27,7 @@ public class UserInfo {
     private String password;
     private String roles; // CLIENTE Y ADMIN
 
-
+    // Getters y setters
     public String getId() {
         return id;
     }

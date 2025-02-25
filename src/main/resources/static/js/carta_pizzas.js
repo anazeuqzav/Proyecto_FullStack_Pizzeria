@@ -1,3 +1,8 @@
+/**
+ * Permite gestionar el catálogo de pizzas.
+ * Permite cargar las pizzas desde la API, mostrarlas dinámicamente en la interfaz,
+ * agregar pizzas al pedido y manejar acciones de usuario como cerrar sesión o ver pedidos.
+ */
 document.addEventListener("DOMContentLoaded", async () => {
     // Recupera el token almacenado en localStorage
     const token = localStorage.getItem("token");

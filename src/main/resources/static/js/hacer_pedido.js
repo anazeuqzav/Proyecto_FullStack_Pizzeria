@@ -1,5 +1,6 @@
 /**
  * Carga el pedido desde el localStorage al cargar la página.
+ * @listens DOMContentLoaded
  */
 document.addEventListener("DOMContentLoaded", function () {
     cargarPedido();
@@ -7,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /**
  * Obtiene el pedido almacenado, lo agrupa por tipo de pizza y lo muestra en la página.
+ * - Si no hay pizzas en el pedido, muestra un mensaje indicándolo.
+ * - Si hay pizzas, las agrupa por nombre y muestra el resumen del pedido.
  */
 function cargarPedido() {
     const pedido = JSON.parse(localStorage.getItem("pedido")) || [];
@@ -22,6 +25,7 @@ function cargarPedido() {
     const pedidoAgrupado = [];
     const pedidoMap = new Map();
 
+    // Agrupa las pizzas por nombre y cuenta la cantidad de cada una
     pedido.forEach(item => {
         if (!pedidoMap.has(item.pizzaNombre)) {
             pedidoMap.set(item.pizzaNombre, {
@@ -35,15 +39,15 @@ function cargarPedido() {
         }
     });
 
+    // Muestra cada pizza en el pedido
     pedidoAgrupado.forEach(item => {
         const div = document.createElement("div");
         div.classList.add("pedido-item");
 
-
         div.innerHTML = `
-            <h3 class = "item-order">${item.nombre}</h3>
-            <p class = "item-order">Precio unitario: ${item.precio.toFixed(2)}€</p>
-            <p class = "item-order">Subtotal: <span id="subtotal-${item.nombre}">${(item.precio * item.cantidad).toFixed(2)}</span>€</p>
+            <h3 class="item-order">${item.nombre}</h3>
+            <p class="item-order">Precio unitario: ${item.precio.toFixed(2)}€</p>
+            <p class="item-order">Subtotal: <span id="subtotal-${item.nombre}">${(item.precio * item.cantidad).toFixed(2)}</span>€</p>
             <div class="cantidad-control">
                 <button onclick="modificarCantidad('${item.nombre}', -1)">➖</button>
                 <span id="cantidad-${item.nombre}">${item.cantidad}</span>
@@ -55,6 +59,7 @@ function cargarPedido() {
         container.appendChild(div);
     });
 
+    // Calcula y muestra el total del pedido
     let totalPedido = pedido.reduce((sum, item) => sum + item.precio, 0).toFixed(2);
 
     const totalDiv = document.createElement("div");
@@ -100,6 +105,10 @@ function eliminarPizza(pizzaNombre) {
 
 /**
  * Envía el pedido a la API.
+ * - Verifica si el usuario está autenticado.
+ * - Construye la estructura del pedido y lo envía al servidor.
+ * - Si el pedido es exitoso, redirige al usuario a la página de sus pedidos.
+ * @async
  */
 async function enviarPedido() {
     const token = localStorage.getItem("token");
@@ -150,7 +159,6 @@ async function enviarPedido() {
         alert("Error al realizar el pedido.");
     }
 }
-
 
 /**
  * Vacía el carrito eliminando todos los elementos del localStorage y recargando la vista.

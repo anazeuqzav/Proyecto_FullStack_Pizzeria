@@ -1,13 +1,21 @@
+/**
+ * Script de registro de usuarios.
+ * Gestiona el formulario de registro de usuarios, incluyendo validaciones básicas,
+ * verificación de disponibilidad del nombre de usuario y envío de datos al backend.
+ */
 document.addEventListener("DOMContentLoaded", function () {
+    // Obtiene el formulario y asigna un evento de escucha para el envío
     document.getElementById("registerForm").addEventListener("submit", async function (event) {
         event.preventDefault(); // Evita el envío del formulario
 
+        // Obtiene los valores de los campos del formulario
         const username = document.getElementById("username").value.trim();
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value.trim();
         const role = document.getElementById("role").value;
         const errorMsg = document.getElementById("errorMsg");
 
+        // Validaciones básicas
         if (!username || !email || !password) {
             errorMsg.textContent = "Todos los campos son obligatorios.";
             errorMsg.classList.remove("hidden");
@@ -39,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Si el usuario no existe, proceder con el registro
         const userData = { username, email, password, roles: role };
 
+        // Enviar solicitud de registro al backend
         try {
             const response = await fetch("http://localhost:8080/auth/addNewUser", {
                 method: "POST",

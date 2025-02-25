@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Representa un pedido en la base de datos MongoDB
+ */
 @Data
 @Document(collection = "pedidos")
 public class Pedido {

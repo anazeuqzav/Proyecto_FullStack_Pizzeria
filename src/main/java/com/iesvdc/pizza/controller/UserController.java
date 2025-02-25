@@ -35,7 +35,6 @@ public class UserController {
     @Autowired
     private UserInfoRepository userInfoRepository;
 
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -90,7 +89,7 @@ public class UserController {
             // Configurar cookie con el token
             Cookie jwtCookie = new Cookie("JWT-TOKEN", token);
             jwtCookie.setHttpOnly(true);
-            jwtCookie.setSecure(false); // Cambia a true si usas HTTPS
+            jwtCookie.setSecure(false);
             jwtCookie.setPath("/"); // Disponible para toda la app
             jwtCookie.setMaxAge(24 * 60 * 60); // Expira en 1 día
             response.addCookie(jwtCookie);
