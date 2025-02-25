@@ -35,13 +35,13 @@
                              <p>${pizza.descripcion || "Sin descripción"}</p>
                              <p>Ingredientes: ${ingredientes}</p>
                              <p>Disponible: ${pizza.disponible ? "Sí" : "No"}</p>
-                             <button onclick="habilitarEdicion('${pizza.id}', '${pizza.nombre || ""}', '${pizza.descripcion || ""}', '${ingredientes}', '${pizza.precio ?? "0.00"}', '${pizza.imagenUrl || ""}', ${pizza.disponible})">Editar</button>
-                             <button onclick="eliminarPizza('${pizza.id}')">Eliminar</button>
+                             <button class="btn secondary" onclick="habilitarEdicion('${pizza.id}', '${pizza.nombre || ""}', '${pizza.descripcion || ""}', '${ingredientes}', '${pizza.precio ?? "0.00"}', '${pizza.imagenUrl || ""}', ${pizza.disponible})">Editar</button>
+                             <button class="btn secondary" onclick="eliminarPizza('${pizza.id}')">Eliminar</button>
                          </li>`;
                  });
 
                  contenido += "</ul>";
-                 contenido += `<button onclick="window.location.href='/auth/agregar_pizza'">Agregar Pizza</button>`;
+                 contenido += `<div class ="btn-container"><button class = "btn" onclick="window.location.href='/auth/agregar_pizza'">Agregar Pizza</button></div>`;
                  document.getElementById("contenido").innerHTML = contenido;
              })
              .catch(error => {
@@ -61,8 +61,8 @@
                  <label>
                      <input type="checkbox" id="input-disponible-${id}" ${disponible ? "checked" : ""}> Disponible
                  </label>
-                 <button onclick="guardarEdicion('${id}')">Guardar</button>
-                 <button onclick="mostrarPizzas()">Cancelar</button>
+                 <button class="btn secondary" onclick="guardarEdicion('${id}')">Guardar</button>
+                 <button class="btn secondary" onclick="mostrarPizzas()">Cancelar</button>
              `;
          }
 
@@ -139,8 +139,8 @@
                                 <option value="LISTO">Listo</option>
                                 <option value="ENTREGADO">Entregado</option>
                             </select>
-                            <button id="editar-${pedido.id}" onclick="editarEstado('${pedido.id}')">Editar Estado</button>
-                            <button id="guardar-${pedido.id}" style="display: none;" onclick="actualizarEstadoPedido('${pedido.id}')">Guardar</button>
+                            <button class="btn secondary" id="editar-${pedido.id}" onclick="editarEstado('${pedido.id}')">Editar Estado</button>
+                            <button class="btn secondary" id="guardar-${pedido.id}" style="display: none;" onclick="actualizarEstadoPedido('${pedido.id}')">Guardar</button>
                         </li><br>`;
                 });
 
@@ -188,5 +188,14 @@
                 document.getElementById(`guardar-${pedidoId}`).style.display = "none";
             })
             .catch(error => console.error("Error al actualizar el estado:", error));
+        }
+
+        /**
+         * Función para cerrar sesión
+         */
+        function cerrarSesion() {
+            localStorage.removeItem("token"); // Elimina el token almacenado
+            document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"; // Borra la cookie
+            window.location.href = "/auth/login"; // Redirige al login
         }
 

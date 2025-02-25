@@ -1,0 +1,191 @@
+/* Estilos generales */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+h1 {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 50px;
+    color: #ff6326;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btn {
+    background-color: #ff7b00;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s, transform 0.2s;
+    margin: 10px;
+}
+
+button:hover {
+    background-color: #ff9d4d;
+    transform: scale(1.05);
+}
+
+/* Contenedor principal */
+#contenido {
+    width: 80%;
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 40px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    text-align: left;
+}
+
+/* Estilos para la lista de pizzas */
+#contenido ul {
+    list-style: none;
+    padding: 0;
+}
+
+#contenido li {
+    border-bottom: 2px solid #ff7b00;
+    padding: 30px 0;
+    font-size: 18px;
+    color: #555;
+    margin-left: 30px;
+}
+
+#contenido li:last-child {
+    border-bottom: none;
+}
+
+#contenido li img {
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+#contenido li strong {
+    color: #d35400;
+}
+
+/* Estilos para los botones de edición y eliminación */
+#contenido li button {
+    margin: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+/* Estilos para los inputs de edición */
+#contenido li input,
+#contenido li textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#contenido li textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+#contenido li label {
+    display: block;
+    margin: 10px 0 5px 0;
+    font-weight: bold;
+}
+
+/* Estilos para la lista de pedidos */
+#contenido li select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#contenido li span {
+    font-weight: bold;
+}
+
+/* Estilos para los botones de editar y guardar en pedidos */
+.btn.secondary {
+    background-color: white;
+    color: #ff7b00;
+    border: 2px solid #ff7b00;
+}
+
+
+/* Estilos para el botón de agregar pizza */
+
+
+/* Estilos para el formulario de agregar pizza */
+.formulario-pizza {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 40px;
+    background-color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    text-align: left;
+}
+
+.formulario-pizza label {
+    display: block;
+    margin: 10px 0 5px 0;
+    font-weight: bold;
+    color: #d35400;
+}
+
+.formulario-pizza .form-input {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+.formulario-pizza .form-input:focus {
+    border-color: #ff7b00;
+    outline: none;
+}
+
+.formulario-pizza select.form-input {
+    padding: 8px;
+    background-color: white;
+}
+
+.formulario-pizza button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #ff7b00;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.formulario-pizza button[type="submit"]:hover {
+    background-color: #ff9d4d;
+    transform: scale(1.05);
+}

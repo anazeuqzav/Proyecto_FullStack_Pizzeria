@@ -19,7 +19,7 @@ h1 {
     text-align: center;
 }
 
-#contenido {
+#order-container {
     width: 80%;
     max-width: 800px;
     margin: 20px auto;
@@ -30,20 +30,54 @@ h1 {
     text-align: left;
 }
 
-.pedido {
+.order {
     border-bottom: 2px solid #ff7b00;
     padding: 15px 0;
     list-style: none;
     font-size: 18px;
     color: #555;
+    position: relative;
+    margin-right: 30px;
 }
 
-.pedido:last-child {
+.order:last-child {
     border-bottom: none;
 }
 
-.pedido strong {
+.order strong {
     color: #d35400;
+}
+
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px 0;
+}
+
+.progress-step {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #ccc;
+    transition: background-color 0.3s;
+}
+
+.progress-step.active {
+    background-color: #ff7b00;
+}
+
+.progress-line {
+    flex-grow: 1;
+    height: 5px;
+    background-color: #ccc;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+}
+
+.progress-line.active {
+    background-color: #ff7b00;
 }
 
 .button-container {

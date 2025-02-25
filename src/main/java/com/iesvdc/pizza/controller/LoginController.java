@@ -33,7 +33,7 @@ public class LoginController {
     @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public String catalogo(Model model, HttpServletRequest request) {
         agregarTokenAlModelo(model, request);
-        return "pizzas";
+        return "carta_pizzas";
     }
 
     @GetMapping("/hacerPedido")

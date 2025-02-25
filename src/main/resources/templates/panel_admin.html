@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Administración - Pizzeria Pom</title>
+    <link rel="stylesheet" href="/css/panel_admin.css">
 </head>
 <body>
-<h1>Bienvenido, Administrador</h1>
-<button onclick="mostrarPizzas()">Gestionar Carta de Pizzas</button>
-<button onclick="mostrarPedidos()">Gestionar Pedidos</button>
+<h1>Panel de administración</h1>
+<div class="btn-container">
+    <button class= "btn" onclick="mostrarPizzas()">Gestionar Carta de Pizzas</button>
+    <button class= "btn" onclick="mostrarPedidos()">Gestionar Pedidos</button>
+    <button class="btn secondary" id="logoutButton" onclick="cerrarSesion()">Cerrar Sesión</button>
+</div>
 
 <div id="contenido"></div>
-<script src="/js/admin.js"></script></body>
+<script src="/js/panel_admin.js"></script></body>
 
 </body>
 </html>

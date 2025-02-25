@@ -1,0 +1,247 @@
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+
+/* Estilos generales */
+body.catalog-body, body.cart-body {
+    font-family: Arial, sans-serif;
+    background-color: white;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+body.cart-body {
+    background-color: #f9f9f9;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ff6326;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 50px;
+    color: white;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+    background-color: #ff7b00;
+    color: white;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn:hover {
+    background-color: #ff9d4d;
+    transform: scale(1.05);
+}
+
+.btn.secondary {
+    background-color: white;
+    color: #ff7b00;
+    border: 2px solid #ff7b00;
+    text-decoration: none;
+}
+
+.btn.secondary:hover {
+    background-color: #ff7b00;
+    color: white;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: white;
+    color: #ff7b00;
+    border: 2px solid #ff7b00;
+    border-radius: 8px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #ff6666;
+    transform: scale(1.05);
+}
+
+/* Estilos para el catálogo */
+.catalog-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+    max-width: 1000px;
+}
+
+.card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    width: 280px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.card h3, .card-title, .cart-summary h2 {
+    font-size: 26px;
+    color: #d35400;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.button-container, .cart-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.primary {
+    background-color: #ff7b00;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+.addToCart {
+    margin-top: 10px;
+    border-radius: 30px;
+    padding: 8px 14px;
+}
+
+/* Estilos para el carrito */
+.cart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 900px;
+    padding: 20px;
+}
+
+.cart-items {
+    width: 90%;
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.cart-item, .pedido-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item:last-child, .pedido-item:last-child {
+    border-bottom: none;
+}
+
+.cart-item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.cart-item h3 {
+    font-size: 20px;
+    color: #d35400;
+    flex-grow: 1;
+    margin: 0;
+}
+
+.cart-item p {
+    font-size: 16px;
+    color: #555;
+    margin: 0 10px;
+}
+
+.cart-summary {
+    width: 100%;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    padding: 20px;
+    text-align: center;
+}
+
+.cart-summary p {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Estilos para el pedido */
+#pedido {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.pedido-item span {
+    flex: 1;
+    text-align: left;
+    margin-right: 10px;
+}
+
+.pedido-item button {
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    background: none;
+    color: inherit;
+}
+
+#total {
+    text-align: right;
+    font-size: 1.2em;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.item-order {
+    margin-right: 20px;
+    width: 20%;
+}

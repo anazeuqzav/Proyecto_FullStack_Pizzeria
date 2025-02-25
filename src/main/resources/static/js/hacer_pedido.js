@@ -41,9 +41,9 @@ function cargarPedido() {
 
 
         div.innerHTML = `
-            <h3>${item.nombre}</h3>
-            <p>Precio unitario: ${item.precio.toFixed(2)}€</p>
-            <p>Subtotal: <span id="subtotal-${item.nombre}">${(item.precio * item.cantidad).toFixed(2)}</span>€</p>
+            <h3 class = "item-order">${item.nombre}</h3>
+            <p class = "item-order">Precio unitario: ${item.precio.toFixed(2)}€</p>
+            <p class = "item-order">Subtotal: <span id="subtotal-${item.nombre}">${(item.precio * item.cantidad).toFixed(2)}</span>€</p>
             <div class="cantidad-control">
                 <button onclick="modificarCantidad('${item.nombre}', -1)">➖</button>
                 <span id="cantidad-${item.nombre}">${item.cantidad}</span>
