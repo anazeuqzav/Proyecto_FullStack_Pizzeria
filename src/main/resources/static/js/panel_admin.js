@@ -172,7 +172,7 @@ function mostrarPedidos() {
         data.forEach(pedido => {
             contenido += `
                 <li>
-                    <strong>ID:</strong> ${pedido.id} <br>
+                    <strong>Número de pedido:</strong> ${pedido.id} <br>
                     <strong>Cliente:</strong> ${pedido.clienteUsername} <br>
                     <strong>Total:</strong> $${pedido.total} <br>
                     <strong>Fecha:</strong> ${new Date(pedido.fecha).toLocaleString()} <br>

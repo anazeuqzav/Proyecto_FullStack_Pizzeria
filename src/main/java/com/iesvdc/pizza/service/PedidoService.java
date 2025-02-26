@@ -59,7 +59,7 @@ public class PedidoService {
     }
 
     /**
-     * Método para ctualiza un pedido existente.
+     * Método para actualiza un pedido existente.
      *
      * @param id     Identificador del pedido a actualizar.
      * @param pedido Objeto Pedido con los nuevos datos.

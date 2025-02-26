@@ -11,9 +11,6 @@ import java.util.List;
 /**
  * Controlador REST para gestionar pizzas en la aplicación.
  * Proporciona endpoints para realizar operaciones CRUD sobre las pizzas.
- *
- * @author Ana Vazquez
- * @version 1.0, 17-02
  */
 @RestController
 @RequestMapping("/api/pizzas")

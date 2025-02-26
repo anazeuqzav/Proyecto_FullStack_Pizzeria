@@ -1,5 +1,4 @@
 /**
- * Script de registro de usuarios.
  * Gestiona el formulario de registro de usuarios, incluyendo validaciones básicas,
  * verificación de disponibilidad del nombre de usuario y envío de datos al backend.
  */

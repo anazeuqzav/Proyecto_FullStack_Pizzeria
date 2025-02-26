@@ -30,6 +30,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+
+/**
+ * Configuración de seguridad para la aplicación PomPizza.
+ * Define la seguridad de las rutas, el manejo de autenticación JWT y la configuración de CORS.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -39,22 +44,30 @@ public class SecurityConfig {
     @Lazy
     private JwtAuthFilter authFilter;
 
-
+    /**
+     * Configura el servicio de detalles de usuario.
+     * @return el servicio de detalles de usuario
+     */
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserInfoService(); // Ensure UserInfoService implements UserDetailsService
+        return new UserInfoService();
     }
+
+    /**
+     * Configura la cadena de filtros de seguridad.
+     * @param http el objeto HttpSecurity para configurar las reglas de seguridad
+     * @return la cadena de filtros de seguridad
+     * @throws Exception en caso de error en la configuración
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 🔹 Habilitar CORS si el frontend está separado
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         // Rutas públicas (sin autenticación)
                         .requestMatchers("/auth/checkUsername/**", "/auth/register", "/auth/login", "/", "/auth/welcome", "/auth/addNewUser", "/auth/generateToken").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()  // Archivos estáticos
-
-                        // Seguridad por roles
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/static/**").permitAll()
                         .requestMatchers("/auth/user/**", "/auth/pizzas", "/auth/hacerPedido", "/auth/mis_pedidos").hasRole("CLIENTE")
                         .requestMatchers("/auth/admin/**", "/auth/panel_admin", "/auth/agregar_pizza", "/auth/editar_pizza/{id}").hasRole("ADMIN")
 
@@ -69,24 +82,30 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,  "/auth/pizzas","/api/pedidos/misPedidos").hasRole("CLIENTE")
                         .requestMatchers(HttpMethod.GET, "/api/pedidos").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/pedidos/{id}").hasRole("ADMIN")
-
-                        .anyRequest().authenticated() // Todas las demás rutas requieren autenticación
+                        .anyRequest().authenticated()
                 )
-                .exceptionHandling(exception -> exception
-                        .accessDeniedPage("/error/acceso-denegado") // Redirige a la URL del controlador
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 🔹 API sin estado
-                .authenticationProvider(authenticationProvider()) // Proveedor de autenticación JWT
+                // Control de acceso denegado
+                .exceptionHandling(exception -> exception.accessDeniedPage("/error/acceso-denegado"))
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
+    /**
+     * Configura el codificador de contraseñas.
+     * @return el codificador de contraseñas BCrypt
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Password encoding
+        return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configura el proveedor de autenticación.
+     * @return el proveedor de autenticación DaoAuthenticationProvider
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -95,15 +114,25 @@ public class SecurityConfig {
         return authenticationProvider;
     }
 
+    /**
+     * Configura el gestor de autenticación.
+     * @param config la configuración de autenticación
+     * @return el gestor de autenticación
+     * @throws Exception en caso de error en la configuración
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Configura la política de CORS para permitir peticiones del frontend.
+     * @return la configuración de CORS
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://127.0.0.1:5500")); // frontend
+        config.setAllowedOrigins(List.of("http://127.0.0.1:5500")); // Para liveserver
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         config.setAllowCredentials(true);

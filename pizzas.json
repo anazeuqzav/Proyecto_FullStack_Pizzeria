@@ -1,0 +1,13 @@
+[
+      { "nombre": "Margarita", "descripcion": "Clásica pizza italiana con tomate y mozzarella", "ingredientes": ["Tomate", "Mozzarella", "Albahaca"], "precio": 8.50, "imagenUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg", "disponible": true },
+      { "nombre": "Pepperoni", "descripcion": "Pizza con extra de pepperoni y queso fundido", "ingredientes": ["Tomate", "Mozzarella", "Pepperoni"], "precio": 9.99, "imagenUrl": "https://www.hola.com/horizon/landscape/e62f79144d74-pizza-pepperoni-age-t.jpg", "disponible": true },
+      { "nombre": "Cuatro Quesos", "descripcion": "Mezcla de quesos fundidos para un sabor inigualable", "ingredientes": ["Mozzarella", "Parmesano", "Gorgonzola", "Ricotta"], "precio": 10.50, "imagenUrl": "https://assets.unileversolutions.com/recipes-v2/216503.jpg", "disponible": true },
+      { "nombre": "BBQ Chicken", "descripcion": "Pollo a la barbacoa con cebolla y queso cheddar", "ingredientes": ["Pollo", "Salsa BBQ", "Mozzarella", "Cebolla", "Cheddar"], "precio": 11.75, "imagenUrl": "https://www.allrecipes.com/thmb/qZ7LKGV1_RYDCgYGSgfMn40nmks=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/AR-24878-bbq-chicken-pizza-beauty-4x3-39cd80585ad04941914dca4bd82eae3d.jpg", "disponible": true },
+      { "nombre": "Hawaiana", "descripcion": "Controversial pero deliciosa combinación de piña y jamón", "ingredientes": ["Tomate", "Mozzarella", "Jamón", "Piña"], "precio": 10.00, "imagenUrl": "https://www.hola.com/horizon/landscape/a17cd68660e0-pizza-hawaiana-t.jpg", "disponible": true },
+      { "nombre": "Vegetariana", "descripcion": "Pizza cargada de vegetales frescos", "ingredientes": ["Tomate", "Mozzarella", "Pimientos", "Cebolla", "Aceitunas"], "precio": 9.50, "imagenUrl": "https://www.revistapancaliente.co/wp-content/uploads/2024/09/Pizza_vegetariana.jpg", "disponible": true },
+      { "nombre": "Carbonara", "descripcion": "Pizza con base de crema y bacon", "ingredientes": ["Crema", "Mozzarella", "Bacon", "Champiñones"], "precio": 10.99, "imagenUrl": "https://i.pinimg.com/736x/76/90/39/7690393d735280c691b41c2b50bc55c1.jpg", "disponible": true },
+      { "nombre": "Mexicana", "descripcion": "Picante y sabrosa con jalapeños y carne", "ingredientes": ["Tomate", "Mozzarella", "Carne", "Jalapeños", "Cebolla"], "precio": 11.50, "imagenUrl": "https://cdn0.recetasgratis.net/es/posts/2/1/2/pizza_mexicana_7212_orig.jpg", "disponible": true },
+      { "nombre": "Barbacoa Suprema", "descripcion": "Carne, salsa BBQ y extra de queso", "ingredientes": ["Carne", "Salsa BBQ", "Mozzarella", "Bacon"], "precio": 12.99, "imagenUrl": "https://imag.bonviveur.com/pizza-barbacoa.jpg", "disponible": true }
+    
+    
+]

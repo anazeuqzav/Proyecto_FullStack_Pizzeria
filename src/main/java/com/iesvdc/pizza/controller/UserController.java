@@ -22,6 +22,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
+/**
+ * Controlador REST que maneja las solicitudes relacionadas con la autenticación y la gestión de usuarios
+ */
 @RestController
 @RequestMapping("/auth")
 public class UserController {
@@ -38,11 +41,22 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    /**
+     * Endpoint público que no requiere autenticación.
+     * Devuelve un mensaje de bienvenida.
+     * @return Mensaje de bienvenida.
+     */
     @GetMapping("/welcome")
     public String welcome() {
         return "Welcome this endpoint is not secure";
     }
 
+    /**
+     * Verifica si un nombre de usuario ya está en uso.
+     * @param username Nombre de usuario a verificar.
+     * @return ResponseEntity con estado HTTP 200 si el nombre de usuario está disponible,
+     *         o estado HTTP 400 con un mensaje de error si ya está en uso.
+     */
     @GetMapping("/checkUsername")
     public ResponseEntity<?> checkUsername(@RequestParam String username) {
         boolean exists = userInfoRepository.findByUsername(username).isPresent();
@@ -52,6 +66,12 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Registra un nuevo usuario en el sistema.
+     * @param userInfo Objeto UserInfo con los datos del nuevo usuario.
+     * @return ResponseEntity con un mensaje de éxito si el usuario se registra correctamente,
+     *         o un mensaje de error con el estado HTTP correspondiente si falla el registro.
+     */
     @PostMapping("/addNewUser")
     public ResponseEntity<?> addNewUser(@Valid @RequestBody UserInfo userInfo) {
         try {
@@ -62,18 +82,36 @@ public class UserController {
         }
     }
 
+    /**
+     * Endpoint accesible solo para usuarios con el rol 'CLIENTE'.
+     * Devuelve un mensaje de bienvenida al perfil de cliente.
+     * @return Mensaje de bienvenida al perfil de cliente.
+     */
     @GetMapping("/user/userProfile")
     @PreAuthorize("hasAuthority('ROLE_CLIENTE')")
     public String userProfile() {
         return "Welcome to Cliente Profile";
     }
 
+    /**
+     * Endpoint accesible solo para usuarios con el rol 'ADMIN'.
+     * Devuelve un mensaje de bienvenida al perfil de administrador.
+     * @return Mensaje de bienvenida al perfil de administrador.
+     */
     @GetMapping("/admin/adminProfile")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public String adminProfile() {
         return "Welcome to Admin Profile";
     }
 
+    /**
+     * Autentica a un usuario y genera un token JWT si las credenciales son válidas.
+     * Además, configura una cookie con el token JWT para su uso posterior.
+     * @param authRequest Objeto AuthRequest con las credenciales del usuario (username y password).
+     * @param response HttpServletResponse para configurar la cookie con el token JWT.
+     * @return ResponseEntity con un mensaje de éxito, el token JWT y una URL de redirección
+     *         si la autenticación es exitosa, o un mensaje de error con estado HTTP 401 si falla.
+     */
     @PostMapping("/generateToken")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest, HttpServletResponse response) {
         Authentication authentication = authenticationManager.authenticate(
@@ -98,11 +136,11 @@ public class UserController {
 
             return ResponseEntity.ok(Map.of(
                     "message", "Autenticación exitosa",
-                    "token", token,  // 🔹 Añadir el token en la respuesta
+                    "token", token,  // Añade el token en la respuesta
                     "redirectUrl", redirectUrl
-            ));        } else {
+            ));
+        } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
         }
     }
-
 }
